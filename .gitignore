@@ -2,22 +2,62 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
 backend/venv/
+venv/
+.venv/
+env/
+.pytest_cache/
+backend/.pytest_cache/
+*.egg-info/
+.coverage
+htmlcov/
+
+# Databases & Local Storage
+*.db
+*.sqlite
+*.sqlite3
 backend/*.db
 backend/*.sqlite3
 backend/uploads/*
 !backend/uploads/.gitkeep
 
-# Node
+# Node & Build Artifacts
 node_modules/
 frontend/node_modules/
 frontend/dist/
+dist/
+build/
+*.tsbuildinfo
+.npm/
 
 # Environment & Secrets
 .env
+.env.*
+!.env.example
+!backend/.env.example
+!frontend/.env.example
 backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
 *.local
+*.pem
+*.key
+*.cert
 
-# IDE
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operating System & IDE
+.DS_Store
+Thumbs.db
 .vscode/
 .idea/
+*.swp
+*.swo
+
