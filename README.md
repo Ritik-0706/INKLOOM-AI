@@ -1,75 +1,201 @@
-Inkloom AI
+<!-- ==================== HERO SECTION ==================== --><div align="center"><img src="https://capsule-render.vercel.app/api?type=venom&height=250&color=0:09090B,50:312E81,100:7C3AED&text=INKLOOM%20AI&fontColor=FFFFFF&fontSize=75&fontAlignY=42&desc=Your%20Brand.%20Your%20Voice.%20Your%20Standards.&descAlignY=62&descSize=17&animation=fadeIn" width="100%" alt="Inkloom AI Banner"/><br/>✦ Intelligent Brand Governance & Content Intelligence ✦
 
 Create confidently. Stay on-brand. Publish responsibly.
 
-Inkloom AI is a brand-governance and content-review platform designed to help teams create content that aligns with their brand guidelines before publication.
+A modern AI-powered platform designed to help teams maintain brand consistency, review content, and streamline approval workflows.
 
-It brings brand rules, content review, approval workflows, and activity tracking into one workspace so teams can identify potential issues and improve their content.
+<br/><a href="https://github.com/Ritik-0706/INKLOOM-AI">
+<img src="https://img.shields.io/badge/GitHub-Repository-18181B?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Repository"/>
+</a>
+<a href="https://fastapi.tiangolo.com/">
+<img src="https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/>
+</a>
+<a href="https://react.dev/">
+<img src="https://img.shields.io/badge/React-Frontend-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React"/>
+</a>
+<a href="https://www.typescriptlang.org/">
+<img src="https://img.shields.io/badge/TypeScript-Ready-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
+</a><br/><br/>
 
-✨ Features
+"Overview" (#-overview) · "Features" (#-key-features) · "Technology" (#-technology-stack) · "Installation" (#-getting-started) · "Security" (#-security-first)
 
-- Brand Guidelines: Maintain brand voice, preferred terminology, restricted terms, and verified brand facts.
-- Content Review: Check drafts for terminology, tone, unsupported claims, factual inconsistencies, and required disclosures.
-- AI-Assisted Suggestions: Review findings and suggested improvements before deciding what to change.
-- Approval Workflows: Support content review and approval across different team roles.
-- Visual Asset Checks: Analyze image assets for dominant colors and compare them with configured brand colors.
-- Analytics and Audit History: Track review activity, findings, and approval history.
-- Role-Based Access: Organize access according to team responsibilities.
+</div>---
 
-«Review results support human decision-making and do not guarantee factual accuracy, legal compliance, or publication readiness.»
+<!-- ==================== OVERVIEW ==================== -->✨ Overview
 
-🛠️ Tech Stack
+Inkloom AI brings brand guidelines, content validation, review workflows, and brand consistency checks into a unified workspace.
 
-Frontend
+Whether a team is preparing marketing campaigns, social media posts, website copy, or other business content, Inkloom AI helps identify potential issues before publication.
 
-- React
-- TypeScript
-- Vite
-- JavaScript
-- HTML5 and CSS3
+Instead of relying entirely on manual reviews, teams can use intelligent content analysis and structured approval processes to improve consistency and efficiency.
 
-Backend
+<table>
+<tr>
+<td width="50%" valign="top">🎯 Brand Intelligence
 
-- Python
-- FastAPI
-- SQLAlchemy
-- JWT-based authentication
+Organize brand voice, preferred terminology, restricted terms, and approved brand information.
 
-Development and Testing
+</td>
+<td width="50%" valign="top">🧠 Content Intelligence
 
-- Git and GitHub
-- Pytest
-- npm
-- Python virtual environments
+Analyze content for potential inconsistencies, unsupported claims, tone issues, and missing disclosures.
 
-📁 Project Structure
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">🛡️ Governance
+
+Support structured reviews, role-based access, and content approval workflows.
+
+</td>
+<td width="50%" valign="top">📊 Visibility
+
+Track review findings, activity, and approval history to support better content decisions.
+
+</td>
+</tr>
+</table>---
+
+🚀 Key Features
+
+<table>
+<tr>
+<td width="60" align="center">🎨</td>
+<td>Brand Guidelines Management
+
+Maintain a consistent brand identity through configurable brand voice, terminology, restricted words, and verified facts.
+
+</td>
+</tr>
+<tr>
+<td align="center">🔍</td>
+<td>Intelligent Content Review
+
+Identify potential issues involving tone, brand terminology, factual inconsistencies, unsupported claims, and required disclosures.
+
+</td>
+</tr>
+<tr>
+<td align="center">💡</td>
+<td>Actionable Recommendations
+
+Review suggested improvements and decide which changes are appropriate before publishing content.
+
+</td>
+</tr>
+<tr>
+<td align="center">✅</td>
+<td>Approval Workflows
+
+Support review and sign-off processes for teams with different responsibilities.
+
+</td>
+</tr>
+<tr>
+<td align="center">🖼️</td>
+<td>Visual Brand Consistency
+
+Analyze image assets for dominant colors and compare them with configured brand colors.
+
+</td>
+</tr>
+<tr>
+<td align="center">📈</td>
+<td>Analytics & Audit History
+
+Provide visibility into review activity, findings, and approval history.
+
+</td>
+</tr>
+<tr>
+<td align="center">🔐</td>
+<td>Role-Based Access Control
+
+Organize application access around team roles and responsibilities.
+
+</td>
+</tr>
+</table>---
+
+🧰 Technology Stack
+
+<div align="center">Frontend
+
+<img src="https://skillicons.dev/icons?i=react,ts,vite,html,css,js" alt="Frontend Technologies"/>Backend & Data
+
+<img src="https://skillicons.dev/icons?i=python,fastapi" alt="Backend Technologies"/>Development Tools
+
+<img src="https://skillicons.dev/icons?i=git,github,vscode" alt="Development Tools"/></div>Layer| Technologies
+Frontend| React, TypeScript, Vite, HTML, CSS, JavaScript
+Backend| Python, FastAPI
+Database Integration| SQLAlchemy
+Authentication| JWT-based authentication
+Testing| Pytest
+Package Management| npm, pip
+Version Control| Git and GitHub
+
+---
+
+🏗️ Architecture Overview
+
+Inkloom AI follows a frontend-backend architecture.
+
+flowchart TD
+    A["👤 User"] --> B["🖥️ React Frontend"]
+    B --> C["⚡ FastAPI Backend"]
+    C --> D["🔐 Authentication & Authorization"]
+    C --> E["🧠 Content Review Services"]
+    C --> F["🎨 Brand Validation"]
+    C --> G["🗄️ Data Layer"]
+    E --> H["📋 Review Findings"]
+    F --> H
+    G --> I["📊 Activity & Approval Data"]
+    H --> J["✨ Results & Recommendations"]
+    I --> J
+    J --> B
+
+    style A fill:#312E81,color:#fff,stroke:#818CF8
+    style B fill:#1E293B,color:#fff,stroke:#38BDF8
+    style C fill:#064E3B,color:#fff,stroke:#34D399
+    style J fill:#4C1D95,color:#fff,stroke:#C4B5FD
+
+This diagram illustrates the high-level application concept, not every implementation detail.
+
+---
+
+📂 Project Structure
 
 INKLOOM-AI/
+│
 ├── backend/
-│   ├── app/
-│   ├── tests/
-│   ├── requirements.txt
-│   └── seed_data.py
+│   ├── app/                 # Backend application
+│   ├── tests/               # Automated tests
+│   ├── requirements.txt     # Python dependencies
+│   └── seed_data.py         # Development seed data
+│
 ├── frontend/
-│   ├── src/
-│   ├── public/
-│   └── package.json
+│   ├── src/                 # Frontend source code
+│   ├── public/               # Static assets
+│   └── package.json         # Node.js dependencies
+│
+├── run_backend.bat          # Backend helper
+├── run_frontend.bat         # Frontend helper
+├── run_tests.bat            # Test runner
+├── seed.bat                 # Seed-data helper
 ├── .gitignore
-├── run_backend.bat
-├── run_frontend.bat
-├── run_tests.bat
-├── seed.bat
 └── README.md
 
-Note: The directory structure above is a simplified overview. Your actual files and folders may differ.
+This is a simplified overview. Refer to the repository for the complete directory structure.
 
-🚀 Getting Started
+---
 
-Follow these steps to run Inkloom AI locally.
+⚙️ Getting Started
+
+Run Inkloom AI locally using the following instructions.
 
 Prerequisites
 
-Make sure you have installed:
+Install these tools first:
 
 - Python
 - Node.js and npm
@@ -79,165 +205,145 @@ Make sure you have installed:
 1. Clone the Repository
 
 git clone https://github.com/Ritik-0706/INKLOOM-AI.git
-
-Navigate to the project directory:
-
 cd INKLOOM-AI
 
-2. Set Up the Backend
-
-Navigate to the backend directory:
+2. Configure the Backend
 
 cd backend
-
-Create a virtual environment:
-
 python -m venv .venv
 
 Activate the virtual environment on Windows PowerShell:
 
 .venv\Scripts\Activate.ps1
 
-Alternatively, use Command Prompt:
-
-.venv\Scripts\activate.bat
-
-Install the required dependencies:
+Install the dependencies:
 
 python -m pip install -r requirements.txt
 
-3. Configure Environment Variables
+Configure any required environment variables using the project's configuration instructions.
 
-If the project includes an ".env.example" file, create your local ".env" file from it.
-
-For PowerShell:
+If an ".env.example" file is available, create your local configuration file:
 
 Copy-Item .env.example .env
 
-Configure the required environment variables according to your local environment.
+Never commit your real ".env" file or private credentials.
 
-Security requirements:
+3. Start the Backend
 
-- Never publish API keys, database passwords, authentication secrets, or access tokens.
-- Never commit your real ".env" file to GitHub.
-- Use strong, unique secrets for production.
-- Store production secrets in your hosting provider's environment configuration or secret manager.
-
-If the project does not include an ".env.example" file, consult the backend configuration to identify the required variables before starting the application.
-
-4. Start the Backend
-
-From the "backend" directory, run:
+From the "backend" directory:
 
 python -m uvicorn app.main:app --reload
 
-If the application starts successfully, FastAPI's interactive API documentation is typically available at:
+When the server starts successfully, the API documentation is typically available at:
 
-http://127.0.0.1:8000/docs
+Swagger UI: "http://127.0.0.1:8000/docs"
 
-The ReDoc interface is typically available at:
+ReDoc: "http://127.0.0.1:8000/redoc"
 
-http://127.0.0.1:8000/redoc
+4. Configure the Frontend
 
-Keep the backend terminal running.
-
-5. Set Up the Frontend
-
-Open a second terminal and navigate to the frontend directory from the repository root:
+Open a second terminal and navigate to the frontend directory from the project root:
 
 cd frontend
-
-Install the frontend dependencies:
-
 npm install
-
-Start the development server:
-
 npm run dev
 
-Open the local URL displayed in the terminal.
+Open the local development URL displayed by Vite.
 
 Ensure that the frontend is configured to communicate with the correct backend address.
 
-Important: Never put private API keys or other secrets in frontend environment variables that are exposed to browser code.
+5. Run Tests
 
-6. Run Tests
-
-From the repository root, you can use the provided Windows test script:
+From the project root on Windows:
 
 run_tests.bat
 
-You can also run the relevant tests directly using the project's configured test commands.
+Alternatively, execute the tests using the commands configured in the project.
 
-🔐 Security
+«Note: Exact configuration requirements may vary depending on the current source code and environment.»
 
-Security is an important consideration for any application that handles users, content, or organizational information.
+---
 
-Inkloom AI should follow these practices:
+🔐 Security First
 
-- Keep credentials and private configuration outside the public repository.
-- Use environment variables for sensitive backend configuration.
-- Apply appropriate authentication and authorization checks.
-- Restrict database access and use secure production database credentials.
-- Configure CORS to allow only trusted origins in production.
-- Use HTTPS when deployed publicly.
-- Avoid exposing internal error messages or sensitive information in application logs.
+Security matters when working with authentication, business content, and organizational data.
+
+Inkloom AI should be configured with the following principles in mind:
+
+- Never publish passwords, API keys, tokens, or private credentials.
+- Keep ".env" files out of version control.
+- Use strong, unique secrets for production.
+- Apply authentication and authorization checks to protected endpoints.
+- Configure CORS for trusted frontend origins.
+- Use HTTPS in production.
+- Restrict database access.
+- Avoid exposing sensitive information in application logs.
 - Keep dependencies updated.
 - Use development seed data only in local or test environments.
-- Review authentication, session management, and token handling before production deployment.
 
-If a real credential has already been committed to a public repository, rotate or revoke it. Removing it from the latest version of a file does not remove it from Git history.
+Important: If a real credential has already been exposed in a public repository, revoke or rotate it. Removing it from the latest file does not erase it from previous Git commits.
 
-⚙️ Configuration and Deployment
+---
 
-Before deploying Inkloom AI, verify the following:
+🌐 Deployment
 
-1. Backend environment variables are configured.
-2. The database is configured and initialized correctly.
-3. The frontend uses the correct deployed backend URL.
-4. CORS allows the intended frontend origin.
-5. Authentication works correctly in the production environment.
-6. Secrets are stored securely and are not included in the frontend bundle.
-7. Tests pass and development-only features are disabled or properly secured.
+Before deploying Inkloom AI, verify that:
 
-The application should be tested in the deployment environment before being used with real users or business data.
+- [ ] Backend environment variables are configured securely.
+- [ ] The production database is configured correctly.
+- [ ] The frontend uses the correct backend URL.
+- [ ] CORS allows only the intended origins.
+- [ ] Authentication and authorization work in production.
+- [ ] Development-only functionality is disabled or appropriately secured.
+- [ ] No secrets are included in frontend assets.
+- [ ] Tests pass in the intended environment.
 
-🧪 Testing
+The application should be tested in its deployment environment before being used with real users or business data.
 
-Testing helps identify errors and maintain application reliability.
+---
 
-The project includes a test runner script that can be used during development:
+🗺️ Project Direction
 
-run_tests.bat
+The platform is designed around four central goals:
 
-Run tests after making changes to authentication, content review, database operations, or other important application features.
+Goal| Purpose
+Consistency| Help teams maintain a recognizable brand voice
+Intelligence| Identify potential content and brand issues
+Governance| Support structured review and approval
+Visibility| Make review findings and activity easier to understand
+
+---
 
 🤝 Contributing
 
-Contributions, suggestions, and improvements are welcome.
-
-To contribute:
+Ideas, feedback, and improvements are welcome.
 
 1. Fork the repository.
-2. Create a new branch for your changes.
-3. Implement and test your changes.
-4. Check that no confidential information has been added.
-5. Submit a pull request describing your changes.
+2. Create a branch for your changes.
+3. Implement and test your improvements.
+4. Review your changes for exposed credentials.
+5. Submit a pull request with a clear description.
+
+---
 
 📄 License
 
 No open-source license is specified in this README.
 
-Unless a license is added to the repository, others do not automatically receive permission to reuse, modify, or redistribute the project.
-
-Add a "LICENSE" file if you intend to release Inkloom AI under an open-source license.
-
-👨‍💻 Project
-
-Inkloom AI
-
-GitHub Repository: https://github.com/Ritik-0706/INKLOOM-AI
+Unless a license is added to the repository, permission to reuse, modify, or redistribute the project is not automatically granted.
 
 ---
 
-Built to help teams maintain brand consistency, improve content quality, and streamline content review.
+<div align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:312E81,100:7C3AED&height=120&section=footer" width="100%" alt="Footer Banner"/>✦ INKLOOM AI ✦
+
+Make every piece of content reflect your brand.
+
+Built with purpose. Designed for consistency.
+
+<br/><a href="https://github.com/Ritik-0706/INKLOOM-AI">
+<img src="https://img.shields.io/badge/Explore%20the%20Repository-7C3AED?style=for-the-badge&logo=github&logoColor=white" alt="Explore Repository"/>
+</a><br/><br/>
+
+<sub>© Inkloom AI · Brand Governance & Content Intelligence</sub>
+
+</div>
