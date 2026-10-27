@@ -1,219 +1,243 @@
-# Inkloom AI — Enterprise Brand Governance & Approval Platform
+Inkloom AI
 
-> **"Create confidently. Stay on-brand. Publish responsibly."**
+Create confidently. Stay on-brand. Publish responsibly.
 
-Inkloom AI is an intelligent brand-governance SaaS platform that ensures every piece of content remains 100% consistent with approved brand identity, tone of voice, factual claims, and disclosure standards before publication.
+Inkloom AI is a brand-governance and content-review platform designed to help teams create content that aligns with their brand guidelines before publication.
 
----
+It brings brand rules, content review, approval workflows, and activity tracking into one workspace so teams can identify potential issues and improve their content.
 
-## 🌟 Live Service Endpoints
+✨ Features
 
-- **Web Application (React + Vite):** [http://localhost:5173](http://localhost:5173)
-- **FastAPI OpenAPI Swagger Documentation:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **FastAPI ReDoc Reference:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
-- **Health Check & AI Engine Status:** [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
+- Brand Guidelines: Maintain brand voice, preferred terminology, restricted terms, and verified brand facts.
+- Content Review: Check drafts for terminology, tone, unsupported claims, factual inconsistencies, and required disclosures.
+- AI-Assisted Suggestions: Review findings and suggested improvements before deciding what to change.
+- Approval Workflows: Support content review and approval across different team roles.
+- Visual Asset Checks: Analyze image assets for dominant colors and compare them with configured brand colors.
+- Analytics and Audit History: Track review activity, findings, and approval history.
+- Role-Based Access: Organize access according to team responsibilities.
 
----
+«Review results support human decision-making and do not guarantee factual accuracy, legal compliance, or publication readiness.»
 
-## 🔑 Demo Personas & Credentials
+🛠️ Tech Stack
 
-The database comes pre-seeded with an organization (**Luminary Cloud Technologies**) and 4 distinct personas to evaluate role-based access control (RBAC):
+Frontend
 
-| Role | Persona Name | Email | Password | Permissions |
-| :--- | :--- | :--- | :--- | :--- |
-| **Admin** | Sarah Chen | `admin@inkloom.ai` | `password123` | Full org setup, brand guidelines, vocabulary rules, user roles |
-| **Approver** | Marcus Vance | `approver@inkloom.ai` | `password123` | Review queue, sign-off authorization, change requests, rejections |
-| **Manager** | Elena Rostova | `manager@inkloom.ai` | `password123` | Analytics oversight, review tracking, guideline supervision |
-| **Creator** | Alex Rivera | `creator@inkloom.ai` | `password123` | Drafting, auditing in studio, applying suggestions, submit for approval |
+- React
+- TypeScript
+- Vite
+- JavaScript
+- HTML5 and CSS3
 
-> **Pro Tip:** In the top navigation bar, use the **Role Switcher** to switch between personas with 1 click during demonstrations.
+Backend
 
----
+- Python
+- FastAPI
+- SQLAlchemy
+- JWT-based authentication
 
-## 🚀 Quick Start on Windows
+Development and Testing
 
-### Option A: Using Convenience Batch Scripts (Recommended)
+- Git and GitHub
+- Pytest
+- npm
+- Python virtual environments
 
-1. **Seed Demonstration Data:**
-   ```powershell
-   .\seed.bat
-   ```
-2. **Start Backend (FastAPI on Port 8000):**
-   ```powershell
-   .\run_backend.bat
-   ```
-3. **Start Frontend (Vite on Port 5173):**
-   ```powershell
-   .\run_frontend.bat
-   ```
-4. **Execute Backend Automated Test Suite:**
-   ```powershell
-   .\run_tests.bat
-   ```
+📁 Project Structure
 
----
-
-### Option B: Manual Step-by-Step Setup
-
-#### 1. Backend Setup
-```powershell
-cd C:\INKLOOM\backend
-python -m venv venv
-venv\Scripts\pip install -r requirements.txt
-venv\Scripts\python seed_data.py
-venv\Scripts\uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
-```
-
-#### 2. Frontend Setup
-```powershell
-cd C:\INKLOOM\frontend
-cmd /c npm install
-cmd /c npm run dev
-```
-
----
-
-## 🧠 Deterministic Review Engine & Explainability
-
-Inkloom AI's review engine operates with **100% deterministic local precision**, requiring **0 paid external API keys**:
-
-1. **Prohibited Terminology Detection:** Flags blacklisted marketing clichés (e.g. *"cheap"*, *"rockstar"*, *"100% guaranteed"*, *"no risk"*), providing rationale and approved replacements.
-2. **Preferred Lexicon Standardization:** Automatically detects informal or deprecated words (e.g. replacing *"ninja"* or *"guru"* with *"specialist"*).
-3. **Tone of Voice Heuristics:** Detects condescending wording (e.g. *"obviously"*, *"clearly everyone knows"*), high-pressure urgency (*"hurry up"*), and corporate jargon.
-4. **Substantiation & Superlative Claims:** Detects claims like *"#1"*, *"world's best"*, *"proven to double"* that lack a corroborating fact in the verified brand knowledge base.
-5. **Factual Contradiction Verification:** Cross-checks content statements against verified brand facts (e.g. flags claims that the company was *"founded in 2018"* when the corporate charter specifies *"founded in 2021"*).
-6. **Mandatory Disclosures:** Ensures required disclaimers accompany sensitive topics (e.g. Product Beta Notices, Financial Performance Disclosures).
-7. **Pillow Visual Asset Inspection:** Analyzes uploaded image files, extracts genuine dominant color swatches, calculates Euclidean delta-E distance from brand color swatches, and validates dimensions.
-
----
-
-## 🎨 Visual Design System
-
-- **Primary Violet:** `#7657F6`
-- **Electric Blue:** `#478BFF`
-- **Accent Coral:** `#FF7B72`
-- **Highlight Mint:** `#53D6B0`
-- **Soft Lavender Background:** `#F7F6FF`
-- **Deep Indigo Text:** `#242044`
-- **Borders:** `#E8E4F7`
-- **Motion & 3D:** Interactive canvas 3D ribbon with pointer tilt response, subtle floating shapes, animated compliance gauge, and micro-interactions.
-
----
-
-## 📁 Project Directory Structure
-
-```
-C:\INKLOOM
+INKLOOM-AI/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py                  # FastAPI application entrypoint & routing
-│   │   ├── core/
-│   │   │   ├── config.py            # Pydantic v2 application settings
-│   │   │   ├── security.py          # Bcrypt hashing & PyJWT token utilities
-│   │   │   └── permissions.py       # RBAC roles (Admin, Manager, Approver, Creator)
-│   │   ├── db/
-│   │   │   ├── session.py           # SQLAlchemy 2.0 SQLite/Postgres session
-│   │   │   └── base.py
-│   │   ├── models/                  # Relational database models
-│   │   │   ├── user.py
-│   │   │   ├── organization.py
-│   │   │   ├── brand.py
-│   │   │   ├── content.py
-│   │   │   ├── review.py
-│   │   │   ├── approval.py
-│   │   │   ├── comment.py
-│   │   │   ├── audit_log.py
-│   │   │   ├── notification.py
-│   │   │   └── asset.py
-│   │   ├── schemas/                 # Pydantic validation request/response schemas
-│   │   ├── api/
-│   │   │   ├── deps.py              # JWT authentication & role dependencies
-│   │   │   └── v1/                  # REST API endpoints
-│   │   │       ├── auth.py
-│   │   │       ├── organizations.py
-│   │   │       ├── users.py
-│   │   │       ├── brands.py
-│   │   │       ├── content.py
-│   │   │       ├── reviews.py       # Studio review & 1-click suggestion application
-│   │   │       ├── approvals.py     # Multi-user sign-off workflows
-│   │   │       ├── comments.py
-│   │   │       ├── analytics.py
-│   │   │       ├── assets.py        # Pillow image color analyzer
-│   │   │       ├── notifications.py
-│   │   │       ├── audit_logs.py
-│   │   │       └── health.py
-│   │   └── services/
-│   │       ├── review_engine.py     # Deterministic local rule evaluation engine
-│   │       ├── llm_provider.py      # Abstract AI provider interface
-│   │       ├── asset_analyzer.py    # Pillow-based dominant color extraction
-│   │       ├── analytics_service.py # Live aggregated analytics
-│   │       └── audit_service.py     # Audit event trail recorder
 │   ├── tests/
-│   │   └── test_api.py              # Pytest test suite covering full lifecycle
-│   ├── seed_data.py                 # Comprehensive demonstration database seeder
 │   ├── requirements.txt
-│   ├── .env.example
-│   └── .env
+│   └── seed_data.py
 ├── frontend/
 │   ├── src/
-│   │   ├── App.tsx                  # Protected routing & layout
-│   │   ├── main.tsx
-│   │   ├── index.css                # Tailwind CSS & design tokens
-│   │   ├── types/index.ts           # Complete TypeScript interfaces
-│   │   ├── api/client.ts            # Central Axios HTTP client with JWT interceptor
-│   │   ├── contexts/AuthContext.tsx # Authentication & demo persona switching
-│   │   ├── components/
-│   │   │   ├── layout/              # Navbar, Sidebar, AppLayout
-│   │   │   ├── ui/                  # ScoreGauge, StatCard, Badge
-│   │   │   └── motion/              # ThreeRibbon, FloatingShapes, TiltCard
-│   │   └── pages/
-│   │       ├── LandingPage.tsx      # Public landing with 3D ribbon hero
-│   │       ├── LoginPage.tsx        # Sign in with 1-click persona buttons
-│   │       ├── RegisterPage.tsx     # Organization onboarding
-│   │       ├── DashboardPage.tsx    # Live analytics, trends, recent drafts
-│   │       ├── BrandsPage.tsx       # Brand guidelines inventory
-│   │       ├── BrandEditorPage.tsx  # Brand voice, prohibited terms, facts editor
-│   │       ├── ReviewStudioPage.tsx # Core split-pane review & suggestion application
-│   │       ├── AssetReviewPage.tsx  # Pillow visual color palette analyzer
-│   │       ├── ApprovalsPage.tsx    # Multi-user approval workflow queue
-│   │       ├── AnalyticsPage.tsx    # Recharts metrics, severity & category breakdowns
-│   │       ├── TeamPage.tsx         # Team members & permission matrix
-│   │       ├── AuditLogsPage.tsx    # Immutable compliance history
-│   │       └── SettingsPage.tsx     # Security & privacy disclosures
-│   ├── package.json
-│   ├── vite.config.ts
-│   └── tailwind.config.js
-├── README.md
+│   ├── public/
+│   └── package.json
+├── .gitignore
 ├── run_backend.bat
 ├── run_frontend.bat
 ├── run_tests.bat
-└── seed.bat
-```
+├── seed.bat
+└── README.md
+
+Note: The directory structure above is a simplified overview. Your actual files and folders may differ.
+
+🚀 Getting Started
+
+Follow these steps to run Inkloom AI locally.
+
+Prerequisites
+
+Make sure you have installed:
+
+- Python
+- Node.js and npm
+- Git
+- A code editor such as Visual Studio Code
+
+1. Clone the Repository
+
+git clone https://github.com/Ritik-0706/INKLOOM-AI.git
+
+Navigate to the project directory:
+
+cd INKLOOM-AI
+
+2. Set Up the Backend
+
+Navigate to the backend directory:
+
+cd backend
+
+Create a virtual environment:
+
+python -m venv .venv
+
+Activate the virtual environment on Windows PowerShell:
+
+.venv\Scripts\Activate.ps1
+
+Alternatively, use Command Prompt:
+
+.venv\Scripts\activate.bat
+
+Install the required dependencies:
+
+python -m pip install -r requirements.txt
+
+3. Configure Environment Variables
+
+If the project includes an ".env.example" file, create your local ".env" file from it.
+
+For PowerShell:
+
+Copy-Item .env.example .env
+
+Configure the required environment variables according to your local environment.
+
+Security requirements:
+
+- Never publish API keys, database passwords, authentication secrets, or access tokens.
+- Never commit your real ".env" file to GitHub.
+- Use strong, unique secrets for production.
+- Store production secrets in your hosting provider's environment configuration or secret manager.
+
+If the project does not include an ".env.example" file, consult the backend configuration to identify the required variables before starting the application.
+
+4. Start the Backend
+
+From the "backend" directory, run:
+
+python -m uvicorn app.main:app --reload
+
+If the application starts successfully, FastAPI's interactive API documentation is typically available at:
+
+http://127.0.0.1:8000/docs
+
+The ReDoc interface is typically available at:
+
+http://127.0.0.1:8000/redoc
+
+Keep the backend terminal running.
+
+5. Set Up the Frontend
+
+Open a second terminal and navigate to the frontend directory from the repository root:
+
+cd frontend
+
+Install the frontend dependencies:
+
+npm install
+
+Start the development server:
+
+npm run dev
+
+Open the local URL displayed in the terminal.
+
+Ensure that the frontend is configured to communicate with the correct backend address.
+
+Important: Never put private API keys or other secrets in frontend environment variables that are exposed to browser code.
+
+6. Run Tests
+
+From the repository root, you can use the provided Windows test script:
+
+run_tests.bat
+
+You can also run the relevant tests directly using the project's configured test commands.
+
+🔐 Security
+
+Security is an important consideration for any application that handles users, content, or organizational information.
+
+Inkloom AI should follow these practices:
+
+- Keep credentials and private configuration outside the public repository.
+- Use environment variables for sensitive backend configuration.
+- Apply appropriate authentication and authorization checks.
+- Restrict database access and use secure production database credentials.
+- Configure CORS to allow only trusted origins in production.
+- Use HTTPS when deployed publicly.
+- Avoid exposing internal error messages or sensitive information in application logs.
+- Keep dependencies updated.
+- Use development seed data only in local or test environments.
+- Review authentication, session management, and token handling before production deployment.
+
+If a real credential has already been committed to a public repository, rotate or revoke it. Removing it from the latest version of a file does not remove it from Git history.
+
+⚙️ Configuration and Deployment
+
+Before deploying Inkloom AI, verify the following:
+
+1. Backend environment variables are configured.
+2. The database is configured and initialized correctly.
+3. The frontend uses the correct deployed backend URL.
+4. CORS allows the intended frontend origin.
+5. Authentication works correctly in the production environment.
+6. Secrets are stored securely and are not included in the frontend bundle.
+7. Tests pass and development-only features are disabled or properly secured.
+
+The application should be tested in the deployment environment before being used with real users or business data.
+
+🧪 Testing
+
+Testing helps identify errors and maintain application reliability.
+
+The project includes a test runner script that can be used during development:
+
+run_tests.bat
+
+Run tests after making changes to authentication, content review, database operations, or other important application features.
+
+🤝 Contributing
+
+Contributions, suggestions, and improvements are welcome.
+
+To contribute:
+
+1. Fork the repository.
+2. Create a new branch for your changes.
+3. Implement and test your changes.
+4. Check that no confidential information has been added.
+5. Submit a pull request describing your changes.
+
+📄 License
+
+No open-source license is specified in this README.
+
+Unless a license is added to the repository, others do not automatically receive permission to reuse, modify, or redistribute the project.
+
+Add a "LICENSE" file if you intend to release Inkloom AI under an open-source license.
+
+👨‍💻 Project
+
+Inkloom AI
+
+GitHub Repository: https://github.com/Ritik-0706/INKLOOM-AI
 
 ---
 
-## 🧪 Automated Test Verification
-
-All integration and unit tests pass with zero failures:
-
-```powershell
-============================= test session starts =============================
-tests/test_api.py::test_health_check PASSED                              [ 14%]
-tests/test_api.py::test_login_demo_admin PASSED                          [ 28%]
-tests/test_api.py::test_login_invalid_password PASSED                    [ 42%]
-tests/test_api.py::test_user_registration PASSED                         [ 57%]
-tests/test_api.py::test_deterministic_review_engine PASSED               [ 71%]
-tests/test_api.py::test_brands_endpoint PASSED                           [ 85%]
-tests/test_api.py::test_content_lifecycle_and_review PASSED              [100%]
-======================= 7 passed in 5.18s =====================================
-```
-
----
-
-## 🔒 Security & Privacy Posture
-
-1. **Password Security:** Salted hashing with `bcrypt` (12 rounds).
-2. **Access Control:** Short-lived JWT bearer tokens with backend dependency role enforcement (`require_admin`, `require_approver`).
-3. **Multi-Tenant Isolation:** All database queries are partitioned by `organization_id`.
-4. **Confidentiality:** Zero content is transmitted to third-party AI models without explicit configuration. All core evaluations run inside the local Python runtime.
-5. **Audit Logging:** Every critical action (review runs, edits, suggestion applications, approval decisions) is recorded with timestamps and responsible actor identity.
+Built to help teams maintain brand consistency, improve content quality, and streamline content review.
