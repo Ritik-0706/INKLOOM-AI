@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { 
-  Bell, CheckCircle2, ChevronDown, LogOut, Shield, 
-  Sparkles, UserCheck, Menu, X, ExternalLink
-} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Bell, LogOut, Shield, Sparkles, Menu } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { UserRole, NotificationItem } from '../../types';
 import api from '../../api/client';
 
 export const Navbar: React.FC<{ onToggleSidebar?: () => void }> = ({ onToggleSidebar }) => {
-  const { user, logout, switchDemoRole } = useAuth();
-  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
@@ -31,12 +26,6 @@ export const Navbar: React.FC<{ onToggleSidebar?: () => void }> = ({ onToggleSid
       await api.post('/notifications/read-all');
       setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
     } catch (e) {}
-  };
-
-  const handleRoleSwitch = async (role: UserRole) => {
-    setShowRoleMenu(false);
-    await switchDemoRole(role);
-    navigate('/dashboard');
   };
 
   const roleColors: Record<UserRole, string> = {
@@ -74,71 +63,9 @@ export const Navbar: React.FC<{ onToggleSidebar?: () => void }> = ({ onToggleSid
       </div>
 
       <div className="flex items-center gap-3">
-        {/* Fast Role Switcher for Hackathon Demo Evaluation */}
-        <div className="relative">
-          <button
-            onClick={() => setShowRoleMenu(!showRoleMenu)}
-            className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-full border border-inkloom-border bg-inkloom-bg/60 hover:bg-white transition-all shadow-sm"
-            title="Switch demo persona to test role permissions"
-          >
-            <span className="text-inkloom-muted hidden sm:inline">Role:</span>
-            <span className={`px-2 py-0.5 rounded-full border uppercase text-[10px] tracking-wide font-bold ${user ? roleColors[user.role] : ''}`}>
-              {user?.role}
-            </span>
-            <ChevronDown className="w-3.5 h-3.5 text-inkloom-muted" />
-          </button>
-
-          {showRoleMenu && (
-            <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-inkloom-border p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-              <div className="px-3 py-2 text-xs font-bold text-inkloom-muted uppercase tracking-wider">
-                Switch Demo Persona
-              </div>
-              <button
-                onClick={() => handleRoleSwitch('admin')}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-purple-50 flex items-center justify-between"
-              >
-                <div>
-                  <div className="font-semibold text-inkloom-text">Sarah Chen (Admin)</div>
-                  <div className="text-[10px] text-inkloom-muted">Full org & brand rule control</div>
-                </div>
-                <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700">Admin</span>
-              </button>
-
-              <button
-                onClick={() => handleRoleSwitch('approver')}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-amber-50 flex items-center justify-between"
-              >
-                <div>
-                  <div className="font-semibold text-inkloom-text">Marcus Vance (Approver)</div>
-                  <div className="text-[10px] text-inkloom-muted">Can sign off or request revisions</div>
-                </div>
-                <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">Approver</span>
-              </button>
-
-              <button
-                onClick={() => handleRoleSwitch('manager')}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-blue-50 flex items-center justify-between"
-              >
-                <div>
-                  <div className="font-semibold text-inkloom-text">Elena Rostova (Manager)</div>
-                  <div className="text-[10px] text-inkloom-muted">Review queue & analytics</div>
-                </div>
-                <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">Manager</span>
-              </button>
-
-              <button
-                onClick={() => handleRoleSwitch('creator')}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-emerald-50 flex items-center justify-between"
-              >
-                <div>
-                  <div className="font-semibold text-inkloom-text">Alex Rivera (Creator)</div>
-                  <div className="text-[10px] text-inkloom-muted">Drafts, audits & applies suggestions</div>
-                </div>
-                <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">Creator</span>
-              </button>
-            </div>
-          )}
-        </div>
+        <span className={`px-2 py-1 rounded-full border uppercase text-[10px] tracking-wide font-bold ${user ? roleColors[user.role] : ''}`}>
+          {user?.role}
+        </span>
 
         {/* Notifications Popover */}
         <div className="relative">

@@ -15,6 +15,7 @@ import { AnalyticsPage } from './pages/AnalyticsPage';
 import { TeamPage } from './pages/TeamPage';
 import { AuditLogsPage } from './pages/AuditLogsPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { ChatPage } from './pages/ChatPage';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -54,6 +55,7 @@ export const App: React.FC = () => {
             }
           >
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/chat" element={<ChatPage />} />
             <Route path="/studio" element={<ReviewStudioPage />} />
             <Route path="/brands" element={<BrandsPage />} />
             <Route path="/brands/new" element={<BrandEditorPage />} />

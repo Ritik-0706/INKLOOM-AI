@@ -27,6 +27,9 @@ def get_current_user(
     user = db.query(User).filter(User.id == user_id).first()
     if user is None or not user.is_active:
         raise credentials_exception
+    organization_id: Optional[str] = payload.get("org")
+    if organization_id and organization_id != user.organization_id:
+        raise credentials_exception
     return user
 
 def require_admin(

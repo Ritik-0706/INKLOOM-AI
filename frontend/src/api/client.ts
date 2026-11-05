@@ -1,4 +1,7 @@
-import axios from 'axios';
+﻿import axios from 'axios';
+
+const STORAGE_KEY = 'inkloom_token';
+const USER_KEY = 'inkloom_user';
 
 const api = axios.create({
   baseURL: '/api/v1',
@@ -7,10 +10,11 @@ const api = axios.create({
   },
 });
 
-// Intercept requests to attach JWT auth token
+const getStoredToken = () => sessionStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(STORAGE_KEY);
+
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('inkloom_token');
+    const token = getStoredToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -19,15 +23,16 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Intercept responses to handle 401 unauthenticated
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
       const currentPath = window.location.pathname;
       if (currentPath !== '/login' && currentPath !== '/register' && currentPath !== '/') {
-        localStorage.removeItem('inkloom_token');
-        localStorage.removeItem('inkloom_user');
+        sessionStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(STORAGE_KEY);
+        sessionStorage.removeItem(USER_KEY);
+        localStorage.removeItem(USER_KEY);
         window.location.href = '/login';
       }
     }

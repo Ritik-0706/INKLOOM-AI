@@ -249,3 +249,26 @@ export interface AnalyticsData {
     suggestion: string;
   }>;
 }
+
+export interface ChatMessage {
+  id?: string;
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  timestamp?: string;
+  brand_id?: string;
+  brand_name?: string;
+}
+
+export interface ChatStatus {
+  is_configured: boolean;
+  model: string;
+  available_models: string[];
+  has_env_key: boolean;
+}
+
+export interface PromptSuggestion {
+  id: string;
+  title: string;
+  prompt: string;
+  category: 'compliance' | 'rewrite' | 'guidelines' | 'claims';
+}

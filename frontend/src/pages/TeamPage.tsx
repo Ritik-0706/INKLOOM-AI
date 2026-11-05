@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Users, Shield, CheckCircle2, XCircle, Mail, UserCheck } from 'lucide-react';
 import api from '../api/client';
 import { User, UserRole } from '../types';
-import { useAuth } from '../contexts/AuthContext';
 
 export const TeamPage: React.FC = () => {
-  const { user: currentUser, switchDemoRole } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -48,9 +46,7 @@ export const TeamPage: React.FC = () => {
         {users.map((member) => (
           <div
             key={member.id}
-            className={`bg-white rounded-3xl p-5 border shadow-card-soft transition-all space-y-4 flex flex-col justify-between ${
-              currentUser?.id === member.id ? 'border-inkloom-primary ring-2 ring-inkloom-primary/20' : 'border-inkloom-border'
-            }`}
+            className="bg-white rounded-3xl p-5 border border-inkloom-border shadow-card-soft transition-all space-y-4 flex flex-col justify-between"
           >
             <div>
               <div className="flex items-start justify-between mb-3">
@@ -72,18 +68,6 @@ export const TeamPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-3 border-t border-inkloom-border/60">
-              <button
-                onClick={() => switchDemoRole(member.role)}
-                className={`w-full py-1.5 px-3 rounded-xl text-xs font-bold transition-all ${
-                  currentUser?.id === member.id
-                    ? 'bg-inkloom-primary/10 text-inkloom-primary cursor-default'
-                    : 'bg-inkloom-bg hover:bg-slate-100 text-inkloom-text border border-inkloom-border'
-                }`}
-              >
-                {currentUser?.id === member.id ? 'Active Persona' : `Switch to ${member.role}`}
-              </button>
-            </div>
           </div>
         ))}
       </div>

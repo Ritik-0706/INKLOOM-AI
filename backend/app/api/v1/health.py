@@ -23,6 +23,7 @@ def health_check(db: Session = Depends(get_db)):
         "service": settings.PROJECT_NAME,
         "version": settings.VERSION,
         "database_connected": db_ok,
+        "database_backend": db.bind.dialect.name if (db_ok and db.bind) else "disconnected",
         "ai_engine": {
             "provider": provider.provider_name,
             "mode": "deterministic_local_rules",

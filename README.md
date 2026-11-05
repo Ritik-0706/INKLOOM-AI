@@ -163,10 +163,113 @@ This diagram illustrates the high-level application concept, not every implement
 
 ---
 
-📂 Project Structure
+## 🔐 Accounts and demo access
 
-INKLOOM-AI/
-│
+Public registrations are always assigned the least-privileged **creator** role. To give hackathon judges access, create a dedicated account through the registration page and share its unique credentials privately. Do not reuse administrator credentials or put passwords in the repository. For the first administrator, configure `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` as protected deployment variables; the password must be at least 16 characters. The account is created only if that email is absent, and existing account passwords are never overwritten.
+
+The optional local demo seed creates test personas only when explicitly enabled with `INKLOOM_ENABLE_DEMO_SEED=true`, only in an empty SQLite database, and only with a unique password supplied through `DEMO_SEED_PASSWORD`. It refuses to run against PostgreSQL and never clears existing data. Do not use the local demo seed for a public deployment.
+
+---
+
+## 🚀 Quick Start on Windows
+
+### Option A: Using Convenience Batch Scripts (Recommended)
+
+1. **Start Backend (FastAPI on Port 8000):**
+   ```powershell
+   .\run_backend.bat
+   ```
+2. **Start Frontend (Vite on Port 5173):**
+   ```powershell
+   .\run_frontend.bat
+   ```
+3. **Execute Backend Automated Test Suite:**
+   ```powershell
+   .\run_tests.bat
+   ```
+
+---
+
+### Option B: Manual Step-by-Step Setup
+
+#### 1. Backend Setup
+```powershell
+cd C:\INKLOOM\backend
+python -m venv venv
+venv\Scripts\pip install -r requirements.txt
+venv\Scripts\uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+#### 2. Frontend Setup
+```powershell
+cd C:\INKLOOM\frontend
+cmd /c npm install
+cmd /c npm run dev
+```
+
+`SECRET_KEY` and `DATABASE_URL` are required. The example environment file uses SQLite for local development; cloud deployments must set `DATABASE_URL` to a persistent managed PostgreSQL database. Keep secrets in a local ignored environment file or a secrets manager; never commit them.
+
+## FastAPI Cloud deployment
+
+The repository root is the deployment directory. `pyproject.toml` selects `main:app`, and `main.py` exposes the existing backend while `frontend/dist` is served by FastAPI. Build the frontend before deploying:
+
+```powershell
+cd C:\INKLOOM\frontend
+npm ci
+npm run build
+cd C:\INKLOOM
+fastapi deploy .
+```
+
+The deployment archive uses `.fastapicloudignore`; it excludes environment files, the local SQLite database, virtual environments, caches, uploaded files, and frontend source while retaining the generated frontend build. Configure protected FastAPI Cloud variables before deployment: `SECRET_KEY`, a persistent PostgreSQL `DATABASE_URL`, and the one-time administrator credentials (`BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD`). The deterministic AI provider works without an external key; `OPENAI_API_KEY` is optional.
+
+Uploaded images currently live in the application filesystem. FastAPI Cloud instances may restart or be replaced, so image files are not durable; do not rely on cloud uploads persisting until an external object-storage provider is selected and configured. Local uploads remain available for local development.
+
+---
+
+## 🧠 Deterministic Review Engine & Explainability
+
+Inkloom AI's review engine operates with **100% deterministic local precision**, requiring **0 paid external API keys**:
+
+---
+
+## 🤖 AI Brand Governance Copilot (Groq + LangChain)
+
+Inkloom AI includes an interactive **Brand Copilot Chatbot** powered by **Groq's accelerated free inference models** and **LangChain**:
+- **Models:** `llama-3.3-70b-versatile` (default free tier), `llama-3.1-8b-instant`, `mixtral-8x7b-32768`, `gemma2-9b-it`.
+- **Dynamic Brand Grounding:** Directly queries the database for the active brand's tone of voice, prohibited terms, preferred vocabulary, verified facts, and mandatory disclaimers.
+- **Interfaces:**
+  - Dedicated full workspace page: `/chat` (linked in sidebar as **AI Brand Copilot**).
+  - Global floating assistant drawer widget (`Ask Copilot`) available from any page in the app.
+- **Configuration:** Set `GROQ_API_KEY` in `backend/.env` or enter your free Groq API key directly via the UI's **"Set Groq Key"** modal (stored locally in the browser).
+
+1. **Prohibited Terminology Detection:** Flags blacklisted marketing clichés (e.g. *"cheap"*, *"rockstar"*, *"100% guaranteed"*, *"no risk"*), providing rationale and approved replacements.
+2. **Preferred Lexicon Standardization:** Automatically detects informal or deprecated words (e.g. replacing *"ninja"* or *"guru"* with *"specialist"*).
+3. **Tone of Voice Heuristics:** Detects condescending wording (e.g. *"obviously"*, *"clearly everyone knows"*), high-pressure urgency (*"hurry up"*), and corporate jargon.
+4. **Substantiation & Superlative Claims:** Detects claims like *"#1"*, *"world's best"*, *"proven to double"* that lack a corroborating fact in the verified brand knowledge base.
+5. **Factual Contradiction Verification:** Cross-checks content statements against verified brand facts (e.g. flags claims that the company was *"founded in 2018"* when the corporate charter specifies *"founded in 2021"*).
+6. **Mandatory Disclosures:** Ensures required disclaimers accompany sensitive topics (e.g. Product Beta Notices, Financial Performance Disclosures).
+7. **Pillow Visual Asset Inspection:** Analyzes uploaded image files, extracts genuine dominant color swatches, calculates Euclidean delta-E distance from brand color swatches, and validates dimensions.
+
+---
+
+## 🎨 Visual Design System
+
+- **Primary Violet:** `#7657F6`
+- **Electric Blue:** `#478BFF`
+- **Accent Coral:** `#FF7B72`
+- **Highlight Mint:** `#53D6B0`
+- **Soft Lavender Background:** `#F7F6FF`
+- **Deep Indigo Text:** `#242044`
+- **Borders:** `#E8E4F7`
+- **Motion & 3D:** Interactive canvas 3D ribbon with pointer tilt response, subtle floating shapes, animated compliance gauge, and micro-interactions.
+
+---
+
+## 📁 Project Directory Structure
+
+```
+C:\INKLOOM
 ├── backend/
 │   ├── app/                 # Backend application
 │   ├── tests/               # Automated tests

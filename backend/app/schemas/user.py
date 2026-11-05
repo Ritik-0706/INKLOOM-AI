@@ -1,15 +1,18 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr
+
+from pydantic import BaseModel, EmailStr, Field
+
 
 class UserBase(BaseModel):
     email: EmailStr
     full_name: str
-    role: str = "creator" # admin, manager, approver, creator
+    role: str = "creator"  # admin, manager, approver, creator
     title: Optional[str] = "Content Specialist"
 
+
 class UserCreate(UserBase):
-    password: str
+    password: str = Field(..., min_length=12, description="Password must be at least 12 characters and include uppercase, lowercase, digits, and a symbol.")
     organization_name: Optional[str] = "Acme Corp"
 
 class UserLogin(BaseModel):

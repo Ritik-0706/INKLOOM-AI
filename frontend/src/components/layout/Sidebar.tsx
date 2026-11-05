@@ -2,7 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, Sparkles, BookOpen, Image as ImageIcon, 
-  CheckSquare, BarChart3, Users, History, Settings, ExternalLink, ShieldAlert
+  CheckSquare, BarChart3, Users, History, Settings, ExternalLink, ShieldAlert,
+  MessageSquare
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -16,6 +17,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   const links = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/chat', label: 'AI Brand Copilot', icon: MessageSquare, badge: 'Groq' },
     { to: '/studio', label: 'Review Studio', icon: Sparkles, badge: 'Core' },
     { to: '/brands', label: 'Brand Guidelines', icon: BookOpen },
     { to: '/assets', label: 'Visual Asset Review', icon: ImageIcon },

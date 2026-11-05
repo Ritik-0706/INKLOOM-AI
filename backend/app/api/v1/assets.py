@@ -1,7 +1,10 @@
 import os
-import shutil
+from io import BytesIO
+from pathlib import Path
 from typing import List, Optional
+from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, status
+from PIL import Image, UnidentifiedImageError
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.core.config import settings
@@ -15,6 +18,12 @@ from app.services.asset_analyzer import visual_analyzer
 router = APIRouter()
 
 ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"]
+IMAGE_FORMATS = {
+    "image/jpeg": ("JPEG", ".jpg"),
+    "image/png": ("PNG", ".png"),
+    "image/webp": ("WEBP", ".webp"),
+    "image/gif": ("GIF", ".gif"),
+}
 
 @router.post("/analyze", response_model=AssetAnalyzeResponse)
 async def upload_and_analyze_asset(
@@ -30,20 +39,36 @@ async def upload_and_analyze_asset(
             detail=f"Unsupported file format '{file.content_type}'. Allowed: JPEG, PNG, WebP, GIF."
         )
 
-    # Securely save file to uploads folder
-    safe_filename = f"{current_user.organization_id}_{file.filename}"
-    file_path = os.path.join(settings.UPLOAD_DIR, safe_filename)
-
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    file_size = os.path.getsize(file_path)
-    if file_size > settings.MAX_UPLOAD_SIZE_MB * 1024 * 1024:
-        os.remove(file_path)
+    max_size = settings.MAX_UPLOAD_SIZE_MB * 1024 * 1024
+    contents = await file.read(max_size + 1)
+    if len(contents) > max_size:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"File exceeds maximum allowed size of {settings.MAX_UPLOAD_SIZE_MB}MB."
         )
+
+    expected_format, extension = IMAGE_FORMATS[file.content_type]
+    try:
+        with Image.open(BytesIO(contents)) as image:
+            if image.format != expected_format:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Image content does not match the declared file format."
+                )
+            image.verify()
+    except (UnidentifiedImageError, OSError, SyntaxError, ValueError, Image.DecompressionBombError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="The uploaded file is not a valid supported image."
+        ) from exc
+
+    safe_filename = f"{current_user.organization_id}_{uuid4().hex}{extension}"
+    file_path = os.path.join(settings.UPLOAD_DIR, safe_filename)
+
+    with open(file_path, "wb") as buffer:
+        buffer.write(contents)
+
+    file_size = len(contents)
 
     # Fetch brand colors if brand specified
     brand_colors = []
@@ -64,7 +89,7 @@ async def upload_and_analyze_asset(
 
     asset = AssetMetadata(
         organization_id=current_user.organization_id,
-        filename=file.filename,
+        filename=Path((file.filename or "upload").replace("\\", "/")).name[:255],
         file_path=file_path,
         file_size_bytes=file_size,
         mime_type=file.content_type,

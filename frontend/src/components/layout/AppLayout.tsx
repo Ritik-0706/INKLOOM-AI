@@ -3,12 +3,13 @@ import { Outlet } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
+import { ChatWidget } from '../chat/ChatWidget';
 
 export const AppLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex bg-inkloom-bg text-inkloom-text">
+    <div className="min-h-screen flex bg-inkloom-bg text-inkloom-text relative">
       {/* Sidebar navigation */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
@@ -29,6 +30,9 @@ export const AppLayout: React.FC = () => {
           </AnimatePresence>
         </main>
       </div>
+
+      {/* Global AI Copilot launcher widget */}
+      <ChatWidget />
     </div>
   );
 };

@@ -1,14 +1,20 @@
 import sys
 import os
+from io import BytesIO
+from pathlib import Path
+from uuid import uuid4
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import pytest
+from PIL import Image
 from fastapi.testclient import TestClient
 from app.main import app
+from app.core.config import settings
 from app.db.session import SessionLocal, Base, engine
 from app.models.user import User
 from app.models.organization import Organization
 from app.services.review_engine import review_engine
+from app.services.llm_provider import get_analysis_provider
 
 client = TestClient(app)
 
@@ -19,6 +25,24 @@ def test_health_check():
     assert data["status"] == "healthy"
     assert data["database_connected"] is True
     assert "ai_engine" in data
+
+def test_protected_endpoint_requires_authentication():
+    response = client.get("/api/v1/brands")
+    assert response.status_code == 401
+
+def test_missing_ai_key_uses_local_provider():
+    original_provider = settings.AI_PROVIDER
+    original_api_key = settings.OPENAI_API_KEY
+    settings.AI_PROVIDER = "openai"
+    settings.OPENAI_API_KEY = ""
+
+    try:
+        provider = get_analysis_provider(prefer_llm=True)
+        assert provider.provider_name == "local_deterministic"
+        assert provider.is_available
+    finally:
+        settings.AI_PROVIDER = original_provider
+        settings.OPENAI_API_KEY = original_api_key
 
 def test_login_demo_admin():
     response = client.post(
@@ -39,20 +63,69 @@ def test_login_invalid_password():
     assert response.status_code == 401
 
 def test_user_registration():
+    email = f"tester-{uuid4().hex}@example.com"
     response = client.post(
         "/api/v1/auth/register",
         json={
-            "email": "tester@example.com",
+            "email": email,
             "password": "securepassword",
             "full_name": "Test User",
             "organization_name": "Test Org",
-            "role": "creator"
+            "role": "admin"
         }
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["user"]["email"] == "tester@example.com"
+    assert data["user"]["email"] == email
+    assert data["user"]["role"] == "creator"
     assert "access_token" in data
+
+def test_frontend_and_api_fallbacks():
+    assert client.get("/docs").status_code == 200
+    frontend = client.get("/dashboard", headers={"accept": "text/html"})
+    assert frontend.status_code == 200
+    assert '<div id="root"></div>' in frontend.text
+
+    api_root = client.get("/api/v1/")
+    assert api_root.status_code == 200
+    assert api_root.json()["api_version"] == "/api/v1"
+
+    unknown_api = client.get("/api/v1/not-a-route")
+    assert unknown_api.status_code == 404
+    assert unknown_api.headers["content-type"].startswith("application/json")
+
+def test_image_upload_validates_image_and_uses_safe_path(tmp_path):
+    login = client.post(
+        "/api/v1/auth/login",
+        json={"email": "creator@inkloom.ai", "password": "password123"}
+    )
+    headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
+    original_upload_dir = settings.UPLOAD_DIR
+    settings.UPLOAD_DIR = str(tmp_path)
+
+    image = BytesIO()
+    Image.new("RGB", (16, 16), color="blue").save(image, format="PNG")
+
+    try:
+        response = client.post(
+            "/api/v1/assets/analyze",
+            headers=headers,
+            files={"file": ("../../unsafe.png", image.getvalue(), "image/png")}
+        )
+        assert response.status_code == 200
+        assert response.json()["asset"]["filename"] == "unsafe.png"
+        uploaded_files = list(Path(tmp_path).iterdir())
+        assert len(uploaded_files) == 1
+        assert uploaded_files[0].name.endswith(".png")
+
+        invalid = client.post(
+            "/api/v1/assets/analyze",
+            headers=headers,
+            files={"file": ("invalid.png", b"not an image", "image/png")}
+        )
+        assert invalid.status_code == 400
+    finally:
+        settings.UPLOAD_DIR = original_upload_dir
 
 def test_deterministic_review_engine():
     # Test prohibited term and unsupported claims

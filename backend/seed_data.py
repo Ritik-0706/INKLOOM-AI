@@ -3,7 +3,9 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from datetime import datetime, timezone, timedelta
+from sqlalchemy import func, select
 from app.db.session import SessionLocal, Base, engine
+from app.core.config import settings
 from app.core.security import get_password_hash
 from app.models.organization import Organization
 from app.models.user import User
@@ -16,22 +18,22 @@ from app.models.audit_log import AuditLog
 from app.models.notification import Notification
 
 def seed():
+    if os.environ.get("INKLOOM_ENABLE_DEMO_SEED") != "true":
+        raise RuntimeError("Demo seeding is disabled. Set INKLOOM_ENABLE_DEMO_SEED=true to seed initial data.")
+    demo_password = os.environ.get("DEMO_SEED_PASSWORD", "")
+    if len(demo_password) < 16:
+        raise RuntimeError("Set DEMO_SEED_PASSWORD to a unique password of at least 16 characters.")
+
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
 
-    # Clear existing data for clean demo
-    db.query(Notification).delete()
-    db.query(AuditLog).delete()
-    db.query(ContentComment).delete()
-    db.query(ApprovalRequest).delete()
-    db.query(ReviewIssue).delete()
-    db.query(ReviewSession).delete()
-    db.query(ContentVersion).delete()
-    db.query(ContentItem).delete()
-    db.query(BrandProfile).delete()
-    db.query(User).delete()
-    db.query(Organization).delete()
-    db.commit()
+    if any(
+        db.scalar(select(func.count()).select_from(table))
+        for table in Base.metadata.sorted_tables
+    ):
+        print("Database already contains data; no changes made.")
+        db.close()
+        return
 
     print("Seeding Inkloom AI database...")
 
@@ -42,11 +44,11 @@ def seed():
         plan="Enterprise Scale"
     )
     db.add(org)
-    db.commit()
+    db.flush()
     db.refresh(org)
 
     # 2. Users with diverse roles
-    default_pw = get_password_hash("password123")
+    default_pw = get_password_hash(demo_password)
     
     admin_user = User(
         organization_id=org.id,
@@ -86,7 +88,7 @@ def seed():
     )
 
     db.add_all([admin_user, approver_user, manager_user, creator_user])
-    db.commit()
+    db.flush()
     db.refresh(admin_user)
     db.refresh(approver_user)
     db.refresh(manager_user)
@@ -185,7 +187,7 @@ def seed():
     )
 
     db.add_all([brand1, brand2])
-    db.commit()
+    db.flush()
     db.refresh(brand1)
     db.refresh(brand2)
 
@@ -202,7 +204,7 @@ def seed():
         latest_score=68.5
     )
     db.add(content1)
-    db.commit()
+    db.flush()
     db.refresh(content1)
 
     c1_text = """Today, we are thrilled to unveil Luminary Cloud Mesh, the world's best distributed computing infrastructure designed to crush the competition.
@@ -221,7 +223,7 @@ Try our beta version today and experience the unbeatable speed of modern cloud i
         created_by_id=creator_user.id
     )
     db.add(v1_1)
-    db.commit()
+    db.flush()
     db.refresh(v1_1)
 
     # Review session for content 1
@@ -240,7 +242,7 @@ Try our beta version today and experience the unbeatable speed of modern cloud i
         summary="Found 10 governance issues including 4 critical claims: unverified 'world's best', 100% uptime violation, unbacked 'no risk', and fact contradiction on founding date."
     )
     db.add(rev1)
-    db.commit()
+    db.flush()
     db.refresh(rev1)
 
     issues1 = [
@@ -386,7 +388,7 @@ Try our beta version today and experience the unbeatable speed of modern cloud i
         )
     ]
     db.add_all(issues1)
-    db.commit()
+    db.flush()
 
     # Content 2: High quality item in review
     content2 = ContentItem(
@@ -400,7 +402,7 @@ Try our beta version today and experience the unbeatable speed of modern cloud i
         latest_score=94.5
     )
     db.add(content2)
-    db.commit()
+    db.flush()
     db.refresh(content2)
 
     c2_text = """In this architectural whitepaper, we examine resilient cluster topologies for mission-critical enterprise workloads.
@@ -424,7 +426,7 @@ By partnering with our certified technical specialists, organizations can achiev
         created_by_id=creator_user.id
     )
     db.add_all([v2_1, v2_2])
-    db.commit()
+    db.flush()
     db.refresh(v2_2)
 
     # Approval Request for Content 2
@@ -439,7 +441,7 @@ By partnering with our certified technical specialists, organizations can achiev
         requested_version_number="2"
     )
     db.add(app2)
-    db.commit()
+    db.flush()
 
     # Comments on Content 2
     comm1 = ContentComment(
@@ -453,7 +455,7 @@ By partnering with our certified technical specialists, organizations can achiev
         message="Reviewing now Alex. Looking very crisp and aligned with our Q3 branding objectives."
     )
     db.add_all([comm1, comm2])
-    db.commit()
+    db.flush()
 
     # Notifications
     notif1 = Notification(
@@ -471,7 +473,7 @@ By partnering with our certified technical specialists, organizations can achiev
         notification_type="issue_flag"
     )
     db.add_all([notif1, notif2])
-    db.commit()
+    db.flush()
 
     # Audit Logs
     audit1 = AuditLog(
@@ -509,11 +511,8 @@ By partnering with our certified technical specialists, organizations can achiev
 
     print("Seed completed successfully!")
     print(f"Organization: {org.name}")
-    print("Demo Users:")
-    print("  - Admin:    admin@inkloom.ai / password123")
-    print("  - Approver: approver@inkloom.ai / password123")
-    print("  - Manager:  manager@inkloom.ai / password123")
-    print("  - Creator:  creator@inkloom.ai / password123")
+    print("Local demo users were created; credentials are not displayed.")
+    db.close()
 
 if __name__ == "__main__":
     seed()

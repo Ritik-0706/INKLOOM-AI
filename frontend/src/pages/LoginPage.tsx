@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Sparkles, Lock, Mail, ArrowRight, Shield, AlertCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { UserRole } from '../types';
 
 export const LoginPage: React.FC = () => {
-  const { login, switchDemoRole } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@inkloom.ai');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,19 +20,6 @@ export const LoginPage: React.FC = () => {
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Invalid email or password. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleQuickDemo = async (role: UserRole) => {
-    setError(null);
-    setIsLoading(true);
-    try {
-      await switchDemoRole(role);
-      navigate('/dashboard');
-    } catch (err: any) {
-      setError('Could not log in with demo account. Please ensure database is seeded.');
     } finally {
       setIsLoading(false);
     }
@@ -58,51 +44,6 @@ export const LoginPage: React.FC = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-6 shadow-card-soft rounded-3xl sm:px-10 border border-inkloom-border">
-          {/* Quick Demo Persona Switcher */}
-          <div className="mb-6 pb-6 border-b border-inkloom-border">
-            <div className="text-[11px] font-bold text-inkloom-muted uppercase tracking-wider mb-2.5 flex items-center justify-between">
-              <span>Quick 1-Click Demo Login</span>
-              <span className="text-[10px] text-inkloom-primary font-semibold">Test Any Role</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('admin')}
-                className="p-2 text-left rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 transition-colors"
-              >
-                <div className="text-xs font-bold text-purple-900">Admin</div>
-                <div className="text-[10px] text-purple-600">Sarah Chen</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('approver')}
-                className="p-2 text-left rounded-xl border border-amber-200 bg-amber-50 hover:bg-amber-100 transition-colors"
-              >
-                <div className="text-xs font-bold text-amber-900">Approver</div>
-                <div className="text-[10px] text-amber-600">Marcus Vance</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('manager')}
-                className="p-2 text-left rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors"
-              >
-                <div className="text-xs font-bold text-blue-900">Manager</div>
-                <div className="text-[10px] text-blue-600">Elena Rostova</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('creator')}
-                className="p-2 text-left rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 transition-colors"
-              >
-                <div className="text-xs font-bold text-emerald-900">Creator</div>
-                <div className="text-[10px] text-emerald-600">Alex Rivera</div>
-              </button>
-            </div>
-          </div>
-
           {error && (
             <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-inkloom-error text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
