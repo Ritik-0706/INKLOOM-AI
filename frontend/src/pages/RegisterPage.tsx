@@ -28,7 +28,11 @@ export const RegisterPage: React.FC = () => {
       });
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Registration failed. Check details.');
+      const detail = err.response?.data?.detail;
+      const validationErrors = Array.isArray(detail)
+        ? detail.map((issue: { msg?: string }) => issue.msg).filter((message): message is string => Boolean(message))
+        : [];
+      setError(validationErrors.join(' ') || (typeof detail === 'string' ? detail : 'Registration failed. Check details.'));
     } finally {
       setIsLoading(false);
     }
@@ -129,10 +133,11 @@ export const RegisterPage: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3.5 py-2.5 pl-10 rounded-xl border border-inkloom-border bg-inkloom-bg/40 text-xs focus:ring-2 focus:ring-inkloom-primary/20 focus:border-inkloom-primary outline-none"
-                  placeholder="••••••••"
+                  placeholder="At least 12 characters"
                 />
                 <Lock className="w-4 h-4 text-inkloom-muted absolute left-3 top-3" />
               </div>
+              <p className="mt-1 text-[11px] text-inkloom-muted">Use at least 12 characters without spaces.</p>
             </div>
 
             <button

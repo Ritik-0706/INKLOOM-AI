@@ -19,7 +19,11 @@ export const LoginPage: React.FC = () => {
       await login(email, password);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Invalid email or password. Please try again.');
+      const detail = err.response?.data?.detail;
+      const validationErrors = Array.isArray(detail)
+        ? detail.map((issue: { msg?: string }) => issue.msg).filter((message): message is string => Boolean(message))
+        : [];
+      setError(validationErrors.join(' ') || (typeof detail === 'string' ? detail : 'Invalid email or password. Please try again.'));
     } finally {
       setIsLoading(false);
     }
